@@ -3,6 +3,7 @@ python-telegram-bot==20.6  # Modern async Telegram API
 httpx[http2]>=0.24.0  # Faster HTTP client (alternative to requests)
 uvicorn[standard]>=0.23.0  # ASGI server (for webhooks)
 python-dotenv>=1.0.0  # Environment management
+dotenv
 
 # Caching & Rate Limiting
 redis>=4.5.5  # Redis client (async support)

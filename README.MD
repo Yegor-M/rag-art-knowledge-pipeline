@@ -35,19 +35,18 @@ Everything is driven from a simple CLI (`art_system.py`).
 Typical layout (simplified):
 
 ```text
-urban_dreams_miniapp/
-  daily_art/
-    art_system.py          # CLI entrypoint
-    config.py              # env, logging, data paths, JSON helpers
-    http_client.py         # requests session with retry/backoff
-    models.py              # Pydantic models (ArtPost, MessagePayload, SourceLink)
-    sources.py             # Serper + Wikipedia clients, source picking
-    llm_generators.py      # PostGenerator + RefinementGenerator
-    telegram_io.py         # caption builder, markup parser, Telegram sender
-    pipeline.py            # ArtPipeline: draft / refine / build_message / send
-    data/
-      drafts/              # raw & refined art posts (*.json)
-      messages/            # ready-to-send Telegram payloads (*.json)
+daily_art/
+  art_system.py          # CLI entrypoint
+  config.py              # env, logging, data paths, JSON helpers
+  http_client.py         # requests session with retry/backoff
+  models.py              # Pydantic models (ArtPost, MessagePayload, SourceLink)
+  sources.py             # Serper + Wikipedia clients, source picking
+  llm_generators.py      # PostGenerator + RefinementGenerator
+  telegram_io.py         # caption builder, markup parser, Telegram sender
+  pipeline.py            # ArtPipeline: draft / refine / build_message / send
+  data/
+    drafts/              # raw & refined art posts (*.json)
+    messages/            # ready-to-send Telegram payloads (*.json)
 
 Requirements: Python 3.11+
 

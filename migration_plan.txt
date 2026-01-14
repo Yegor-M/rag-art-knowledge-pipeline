@@ -1,0 +1,203 @@
+Migration Plan: from “web JSON → LLM” to “Docs → KB → Evidence → LLM”
+Guiding rule (so you don’t drift)
+
+Never refactor everything at once.
+Make the system run after each phase.
+
+Phase 0 — Stabilize imports & config (do this first)
+Goal: Make the project importable without side effects and without runtime errors on import.
+
+Tasks
+
+Config
+
+Create core/config.py with Settings object (or simple env reader)
+
+No print(), no mkdir, no raising on import
+
+Validation
+
+Add core/validate.py (or function in config.py) that checks env keys
+
+Call validation only from CLI entrypoint, not module import
+
+FS helpers
+
+Ensure save_json/load_json and dirs in core/fs.py
+
+Provide ensure_dirs() and call from CLI or pipeline init
+
+Files to touch
+
+core/config.py
+
+core/fs.py
+
+cli.py (or your entrypoint) to call validate + ensure_dirs
+
+✅ Done when: python -m daily_art.cli --help works even without API keys.
+
+Phase 1 — Refactor “search tool” into Documents (no KB yet)
+Goal
+
+Stop passing raw Serper JSON around. Convert search/wikipedia outputs into Document objects.
+
+Tasks
+
+Add domain/documents.py:
+
+Document, Chunk, Evidence, SearchResult
+
+Update Serper connector:
+
+search_documents(query) -> list[Document]
+
+keep search_images(query) as is
+
+Update Wikipedia connector:
+
+get_document(query) -> Document | None
+
+Files to touch
+
+domain/documents.py (new)
+
+connectors/serper.py (from sources.py)
+
+connectors/wikipedia.py (from sources.py)
+
+pipeline/art_pipeline.py (only enough to use new methods)
+
+✅ Done when: pipeline can print/save docs.jsonl from a query.
+
+Stop here and commit.
+
+Phase 2 — Add chunking + embeddings + vector store (KB v1)
+Goal
+
+Build the “left side of RAG”: chunk → embed → index → search.
+
+Tasks (minimal order)
+
+rag/chunking.py
+
+Chunker.chunk(doc: Document) -> list[Chunk]
+
+rag/embeddings.py
+
+Embedder.embed_texts(texts: list[str]) -> list[list[float]]
+
+rag/vectordb.py
+
+VectorStore.upsert(chunks, vectors)
+
+VectorStore.search(query_vector, top_k) -> list[SearchResult]
+
+rag/kb.py
+
+KnowledgeBase.upsert_documents(docs)
+
+KnowledgeBase.search(query, top_k) -> list[Evidence]
+
+Files to start with (best order)
+
+rag/chunking.py
+
+rag/embeddings.py
+
+rag/vectordb.py
+
+rag/kb.py
+
+✅ Done when: you can run a script/CLI command:
+
+ingest docs
+
+index docs into vectordb
+
+query KB and print top-k snippets
+
+Stop here and commit.
+
+Phase 3 — Step 5 change: generator consumes Evidence (not Serper JSON)
+Goal
+
+Modern RAG: the model sees evidence snippets + metadata only.
+
+Tasks
+
+Change generator API:
+
+PostGenerator.generate(meta, evidence: list[Evidence]) -> dict
+
+Update prompt:
+
+“Use ONLY evidence”
+
+output strict JSON
+
+Update pipeline draft flow:
+
+query → docs → kb.upsert_documents(docs)
+
+evidence = kb.search(query)
+
+generator.generate(meta, evidence)
+
+Citations become deterministic:
+
+citations = citations_from_evidence(evidence) (source_url/title)
+
+no more pick_sources(top_meta, wiki_summary) logic
+
+Files to touch
+
+connectors/llm.py or llm_generators.py
+
+pipeline/art_pipeline.py
+
+Remove/retire:
+
+parse_serper_assets, pick_sources (or keep temporarily unused)
+
+✅ Done when: draft() works end-to-end using evidence retrieval.
+
+Stop here and commit.
+
+Phase 4 — Caching + idempotency (so it’s “real”)
+Goal
+
+Avoid paying twice; keep runs reproducible.
+
+Tasks
+
+Cache Serper responses by query (json file)
+
+Cache Wikipedia doc by query
+
+Cache embeddings by chunk hash
+
+Files to touch
+
+connectors/serper.py (cache layer)
+
+rag/embeddings.py (embedding cache)
+
+core/fs.py (cache helpers)
+
+✅ Done when: running draft twice does not re-embed unchanged chunks.
+
+Phase 5 — Evaluation (small but powerful)
+Goal
+
+Show you understand retrieval quality.
+
+Tasks
+
+eval/gold.json (10–30 queries + expected URLs or doc ids)
+
+eval/retrieval_eval.py
+
+Recall@k, MRR
+
+✅ Done when: python -m daily_art.eval.retrieval_eval outputs metrics.
