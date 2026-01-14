@@ -1,0 +1,31 @@
+{
+  "photo_url": "https://www.moma.org/media/W1siZiIsIjM4NjQ3MCJdLFsicCIsImNvbnZlcnQiLCItcXVhbGl0eSA5MCAtcmVzaXplIDIwMDB4MjAwMFx1MDAzZSJdXQ.jpg?sha=fdc1ab6baa7f5400",
+  "caption": "\"Time is the longest distance between two places.\" — Tennessee Williams\n\nName: The Persistence of Memory\nYear: 1931\nStyle: Surrealism\n\nThe painting features soft, melting clocks draped over a surreal landscape, including a tree and a distorted figure.\nCreated during a time of great artistic experimentation in the early 20th century, this work reflects the influence of Freudian theories about the unconscious mind and the nature of dreams.\nThe melting clocks symbolize the fluidity of time and challenge our conventional understanding of its passage, suggesting that time can be subjective and distorted.\nDalí's masterpiece continues to resonate in contemporary culture, inviting viewers to ponder the nature of time and reality in an increasingly complex world.\n\nThe painting was sold for $250 at its first exhibition in 1932 and was donated to MoMA two years later, where it remains one of the museum's most famous pieces.\n\n#art_insight",
+  "caption_entities": [
+    {
+      "type": "italic",
+      "offset": 0,
+      "length": 71
+    },
+    {
+      "type": "bold",
+      "offset": 73,
+      "length": 5
+    },
+    {
+      "type": "bold",
+      "offset": 105,
+      "length": 5
+    },
+    {
+      "type": "bold",
+      "offset": 116,
+      "length": 6
+    },
+    {
+      "type": "spoiler",
+      "offset": 766,
+      "length": 160
+    }
+  ]
+}
