@@ -29,22 +29,19 @@ class Settings:
 
 
 def load_settings() -> Settings:
-    """
-    Loads environment + returns Settings.
-    IMPORTANT: no validation, no filesystem ops, no printing.
-    """
-    base_dir = Path(__file__).resolve().parents[1]  # daily_art/
-    env_path = base_dir / ".env"
-    if env_path.exists():
-        load_dotenv(env_path)
+    pkg_dir = Path(__file__).resolve().parents[1]   # daily_art/ package dir
+    repo_dir = pkg_dir.parent                       # repo root
 
-    data_dir = base_dir / "data"
+    env_path = repo_dir / ".env"
+    load_dotenv(env_path)
+
+    data_dir = repo_dir / "data"
     drafts_dir = data_dir / "drafts"
     messages_dir = data_dir / "messages"
     kb_dir = data_dir / "kb"
 
     return Settings(
-        base_dir=base_dir,
+        base_dir=repo_dir,
         data_dir=data_dir,
         drafts_dir=drafts_dir,
         messages_dir=messages_dir,

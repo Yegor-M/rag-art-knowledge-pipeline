@@ -8,14 +8,14 @@ from daily_art.core.config import load_settings
 from daily_art.core.fs import ensure_dirs, save_json
 from daily_art.core.logging import configure_logging
 from daily_art.core.validate import validate_settings
-
-# Phase 1 imports
 from daily_art.connectors.serper import SerperClient
 from daily_art.connectors.wikipedia import WikipediaClient
-
+from daily_art.core.fs import load_json
+from daily_art.domain.documents import Document
+from daily_art.rag.kb import KnowledgeBase
+from daily_art.core.validate import validate_settings
 
 log = logging.getLogger("daily_art.cli")
-
 
 def cmd_fetch_docs(args: argparse.Namespace) -> int:
     s = load_settings()
@@ -56,8 +56,45 @@ def build_parser() -> argparse.ArgumentParser:
     f.add_argument("--use-wiki", action="store_true", help="Enable Wikipedia document")
     f.set_defaults(func=cmd_fetch_docs)
 
+    ix = sub.add_parser("kb-index", help="Index documents JSON into vector store")
+    ix.add_argument("--docs", required=True, help="Path to docs JSON produced by fetch-docs")
+    ix.set_defaults(func=cmd_kb_index)
+
+    qs = sub.add_parser("kb-search", help="Search the KB and print evidence snippets")
+    qs.add_argument("query", type=str)
+    qs.add_argument("--top-k", type=int, default=6)
+    qs.set_defaults(func=cmd_kb_search)
+
     return p
 
+
+def cmd_kb_index(args: argparse.Namespace) -> int:
+    s = load_settings()
+    configure_logging(s.log_level)
+    validate_settings(s, require_telegram=False, require_serper=False)
+
+    docs_path = Path(args.docs)
+    raw = load_json(docs_path)
+    docs = [Document(**d) for d in raw]
+
+    kb = KnowledgeBase(openai_api_key=s.openai_api_key)
+    n_chunks = kb.upsert_documents(docs)
+    log.info("Indexed %d docs into %d chunks", len(docs), n_chunks)
+    return 0
+
+
+def cmd_kb_search(args: argparse.Namespace) -> int:
+    s = load_settings()
+    configure_logging(s.log_level)
+    validate_settings(s, require_telegram=False, require_serper=False)
+
+    kb = KnowledgeBase(openai_api_key=s.openai_api_key)
+    ev = kb.search(args.query, top_k=args.top_k)
+
+    for i, e in enumerate(ev, 1):
+        print(f"\n[{i}] score={e.score:.4f} title={e.source_title} url={e.source_url}")
+        print(e.text)
+    return 0
 
 def main() -> int:
     parser = build_parser()
