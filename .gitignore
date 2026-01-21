@@ -64,6 +64,7 @@ generate_art_post.ipynb
 .DS_Store
 Thumbs.db
 
+data/
 # Docker
 docker-compose.override.yml
 *.pid

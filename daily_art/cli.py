@@ -1,9 +1,7 @@
 from __future__ import annotations
-
 import argparse
 import logging
 from pathlib import Path
-
 from daily_art.core.config import load_settings
 from daily_art.core.fs import ensure_dirs, save_json
 from daily_art.core.logging import configure_logging
@@ -14,6 +12,7 @@ from daily_art.core.fs import load_json
 from daily_art.domain.documents import Document
 from daily_art.rag.kb import KnowledgeBase
 from daily_art.core.validate import validate_settings
+from daily_art.pipeline.art_pipeline import ArtPipeline
 
 log = logging.getLogger("daily_art.cli")
 
@@ -45,8 +44,13 @@ def cmd_fetch_docs(args: argparse.Namespace) -> int:
 
 
 def build_parser() -> argparse.ArgumentParser:
-    p = argparse.ArgumentParser(prog="daily_art", description="RAG knowledge pipeline (Phase 0/1)")
+    p = argparse.ArgumentParser(prog="daily_art", description="RAG knowledge pipeline")
     sub = p.add_subparsers(dest="cmd", required=True)
+    p_draft = sub.add_parser("draft", help="Generate art post draft using RAG (docs → KB → evidence → LLM)")
+    p_draft.add_argument("title", type=str)
+    p_draft.add_argument("author", type=str)
+    p_draft.add_argument("year", type=str)
+    p_draft.set_defaults(func=cmd_draft)
 
     f = sub.add_parser("fetch-docs", help="Fetch documents from Serper/Wikipedia and save as JSON")
     f.add_argument("query", type=str)
@@ -67,6 +71,12 @@ def build_parser() -> argparse.ArgumentParser:
 
     return p
 
+def cmd_draft(args) -> int:
+    pipeline = ArtPipeline()
+    path = pipeline.draft(title=args.title, author=args.author, year=args.year)
+
+    print(path)
+    return 0
 
 def cmd_kb_index(args: argparse.Namespace) -> int:
     s = load_settings()
