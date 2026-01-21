@@ -63,7 +63,7 @@ class ArtPost(BaseModel):
     citations: List[SourceLink] = Field(default_factory=list)
 
 
-# class MessagePayload(BaseModel):
-#     photo_url: str
-#     caption: str
-#     caption_entities: List[Dict[str, Any]]
+class MessagePayload(BaseModel):
+    photo_url: str
+    caption: str
+    caption_entities: List[Dict[str, Any]]

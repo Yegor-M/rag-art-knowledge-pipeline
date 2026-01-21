@@ -45,12 +45,27 @@ def cmd_fetch_docs(args: argparse.Namespace) -> int:
 
 def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(prog="daily_art", description="RAG knowledge pipeline")
+
     sub = p.add_subparsers(dest="cmd", required=True)
     p_draft = sub.add_parser("draft", help="Generate art post draft using RAG (docs → KB → evidence → LLM)")
     p_draft.add_argument("title", type=str)
     p_draft.add_argument("author", type=str)
     p_draft.add_argument("year", type=str)
     p_draft.set_defaults(func=cmd_draft)
+
+    p_bm = sub.add_parser("build-message", help="Build Telegram message JSON from ArtPost JSON")
+    p_bm.add_argument("art_json", type=str, help="Path to ArtPost JSON (draft/refined)")
+    p_bm.set_defaults(func=cmd_build_message)
+
+    p_send = sub.add_parser("send", help="Send Telegram message from MessagePayload JSON")
+    p_send.add_argument("message_json", type=str, help="Path to message JSON produced by build-message")
+    p_send.set_defaults(func=cmd_send)
+
+    p_post = sub.add_parser("post", help="Draft -> build-message -> send")
+    p_post.add_argument("title", type=str)
+    p_post.add_argument("author", type=str)
+    p_post.add_argument("year", type=str)
+    p_post.set_defaults(func=cmd_post)
 
     f = sub.add_parser("fetch-docs", help="Fetch documents from Serper/Wikipedia and save as JSON")
     f.add_argument("query", type=str)
@@ -92,6 +107,33 @@ def cmd_kb_index(args: argparse.Namespace) -> int:
     log.info("Indexed %d docs into %d chunks", len(docs), n_chunks)
     return 0
 
+def cmd_build_message(args) -> int:
+    pipeline = ArtPipeline()
+    out_path = pipeline.build_message(Path(args.art_json))
+    print(out_path)
+    return 0
+
+
+def cmd_send(args) -> int:
+    pipeline = ArtPipeline()
+    resp = pipeline.send(Path(args.message_json))
+    # Print minimal output
+    msg_id = resp.get("result", {}).get("message_id")
+    print(f"sent message_id={msg_id}")
+    return 0
+
+
+def cmd_post(args) -> int:
+    """
+    Convenience: draft -> build-message -> send
+    """
+    pipeline = ArtPipeline()
+    art_path = pipeline.draft(args.title, args.author, args.year)
+    msg_path = pipeline.build_message(art_path)
+    resp = pipeline.send(msg_path)
+    msg_id = resp.get("result", {}).get("message_id")
+    print(f"posted message_id={msg_id}")
+    return 0
 
 def cmd_kb_search(args: argparse.Namespace) -> int:
     s = load_settings()
