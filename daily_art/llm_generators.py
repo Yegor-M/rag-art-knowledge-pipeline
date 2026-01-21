@@ -43,7 +43,6 @@ class PostGenerator:
         )
 
     def generate(self, meta: Dict[str, Any], evidence: List[Evidence]) -> Dict[str, Any]:
-        # Keep evidence compact: top ~6 snippets
         lines = []
         for i, e in enumerate(sorted(evidence, key=lambda x: x.score, reverse=True)[:6], 1):
             src = (e.source_title or "").strip()

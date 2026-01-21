@@ -1,0 +1,18 @@
+[
+    {
+      "id": "mona_lisa_painter",
+      "query": "Who painted the Mona Lisa?",
+      "expected_urls": ["https://en.wikipedia.org/wiki/Mona_Lisa"]
+    },
+    {
+      "id": "mona_lisa_style",
+      "query": "What art period is the Mona Lisa associated with?",
+      "expected_urls": ["https://en.wikipedia.org/wiki/Mona_Lisa"]
+    },
+    {
+      "id": "mona_lisa_description",
+      "query": "Describe the Mona Lisa painting briefly.",
+      "expected_urls": ["https://en.wikipedia.org/wiki/Mona_Lisa"]
+    }
+  ]
+  

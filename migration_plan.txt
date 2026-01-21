@@ -151,31 +151,8 @@ Stop & Commit
 - "Phase 3: evidence-grounded generation + deterministic citations"
 
 ───────────────────────────────────────────────────────────────────────────────
-Phase 4 — Caching + idempotency
-Goal
-- Avoid paying twice; keep runs reproducible.
 
-Tasks
-1) Cache Serper responses by query (file cache)
-2) Cache Wikipedia doc by query
-3) Cache embeddings by chunk hash (text hash -> vector)
-4) (Optional) incremental indexing:
-- skip upsert for unchanged chunks
-
-Files to touch
-- connectors/serper.py (cache layer)
-- connectors/wikipedia.py (cache layer)
-- rag/embeddings.py (embedding cache)
-- core/fs.py (cache helpers)
-
-Definition of Done
-- Running draft twice does not re-fetch and does not re-embed unchanged chunks.
-
-Stop & Commit
-- "Phase 4: caching + idempotent indexing"
-
-───────────────────────────────────────────────────────────────────────────────
-Phase 5 — Evaluation (small but powerful)
+Phase 4 — Evaluation (small but powerful)
 Goal
 - Demonstrate retrieval quality (not just demos).
 
