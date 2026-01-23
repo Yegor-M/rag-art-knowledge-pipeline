@@ -5,34 +5,22 @@
     "text": "Mona Lisa - Wikipedia\nThe Mona Lisa [a] is a half-length portrait painting by the Italian artist Leonardo da Vinci. Considered an archetypal masterpiece of the Italian Renaissance.",
     "url": "https://en.wikipedia.org/wiki/Mona_Lisa",
     "source_type": "serper",
-    "created_at": "2026-01-16T09:26:30.257732+00:00",
+    "created_at": "2026-01-23T11:15:03.267396+00:00",
     "metadata": {
       "query": "Mona Lisa",
       "position": 1
     }
   },
   {
-    "id": "serper_91fa2e20c2c64c58",
-    "title": "From the 'Mona Lisa' to 'The Wedding Feast at Cana' - The Salle des ...",
-    "text": "From the 'Mona Lisa' to 'The Wedding Feast at Cana' - The Salle des ...\nThe world's most famous painting, the Mona Lisa, needs a space big enough to welcome its many admirers. It is therefore housed in the Louvre's largest room, the ...",
-    "url": "https://www.louvre.fr/en/explore/the-palace/from-the-mona-lisa-to-the-wedding-feast-at-cana",
+    "id": "serper_d4f8e3a8725aecc6",
+    "title": "Portrait of Lisa Gherardini, wife of Francesco del Giocondo, known ...",
+    "text": "Portrait of Lisa Gherardini, wife of Francesco del Giocondo, known ...\nThis portrait is believed to be of Lisa Gherardini, the wife of Florentine fabric merchant Francesco del Giocondo. In Italian it is known as \"La Gioconda\",.",
+    "url": "https://artsandculture.google.com/asset/portrait-of-lisa-gherardini-wife-of-francesco-del-giocondo-known-as-monna-lisa-la-gioconda-or-mona-lisa-1503-1519-leonardo-di-ser-piero-da-vinci-dit-l%C3%A9onard-de-vinci-1452-1519-paris-mus%C3%A9e-du-louvre/uQGZ28lYUJ3OGw?hl=en",
     "source_type": "serper",
-    "created_at": "2026-01-16T09:26:30.257802+00:00",
+    "created_at": "2026-01-23T11:15:03.267410+00:00",
     "metadata": {
       "query": "Mona Lisa",
       "position": 2
-    }
-  },
-  {
-    "id": "serper_1992e770ab58573c",
-    "title": "j-hope 'MONA LISA' Official MV - YouTube",
-    "text": "j-hope 'MONA LISA' Official MV - YouTube\nj-hope 'MONA LISA' Listen now: https://jhope.lnk.to/MONALISA Credits: Director: Yongseok Choi (Lumpens) Assistant Director: Ran Ro ...",
-    "url": "https://www.youtube.com/watch?v=ECqGCH1TfLY",
-    "source_type": "serper",
-    "created_at": "2026-01-16T09:26:30.257834+00:00",
-    "metadata": {
-      "query": "Mona Lisa",
-      "position": 3
     }
   },
   {
@@ -41,33 +29,34 @@
     "text": "The Mona Lisa Foundation\nThis website is dedicated to the work of The Mona Lisa Foundation, presenting Leonardo da Vinci's earlier version of his most celebrated painting, La Prima ...",
     "url": "https://monalisa.org/",
     "source_type": "serper",
-    "created_at": "2026-01-16T09:26:30.257864+00:00",
+    "created_at": "2026-01-23T11:15:03.267416+00:00",
+    "metadata": {
+      "query": "Mona Lisa",
+      "position": 3
+    }
+  },
+  {
+    "id": "serper_b70ffc2f4ac169de",
+    "title": "This Is How The Mona Lisa Should Really Look - YouTube",
+    "text": "This Is How The Mona Lisa Should Really Look - YouTube\nThe Prado Mona Lisa is a truly remarkable painting done by a master artist, but to claim it as the original would raise such a fuss that it ...",
+    "url": "https://www.youtube.com/watch?v=qlWoK0hNrSE",
+    "source_type": "serper",
+    "created_at": "2026-01-23T11:15:03.267421+00:00",
     "metadata": {
       "query": "Mona Lisa",
       "position": 4
     }
   },
   {
-    "id": "serper_ca276bd3039e558f",
-    "title": "Mona Lisa | Painting, Painter, History, Meaning, & Facts - Britannica",
-    "text": "Mona Lisa | Painting, Painter, History, Meaning, & Facts - Britannica\nMona Lisa, oil painting on a poplar wood panel by Leonardo da Vinci, probably the world's most famous painting. It was painted sometime between ...",
-    "url": "https://www.britannica.com/topic/Mona-Lisa-painting",
+    "id": "serper_91fa2e20c2c64c58",
+    "title": "From the 'Mona Lisa' to 'The Wedding Feast at Cana' - The Salle des ...",
+    "text": "From the 'Mona Lisa' to 'The Wedding Feast at Cana' - The Salle des ...\nThe world's most famous painting, the Mona Lisa, needs a space big enough to welcome its many admirers. It is therefore housed in the Louvre's largest room, the ...",
+    "url": "https://www.louvre.fr/en/explore/the-palace/from-the-mona-lisa-to-the-wedding-feast-at-cana",
     "source_type": "serper",
-    "created_at": "2026-01-16T09:26:30.257893+00:00",
+    "created_at": "2026-01-23T11:15:03.267425+00:00",
     "metadata": {
       "query": "Mona Lisa",
       "position": 5
-    }
-  },
-  {
-    "id": "wiki_5a4e8e9bfee90607",
-    "title": "Mona Lisa",
-    "text": "The Mona Lisa is a half-length portrait painting by the Italian artist Leonardo da Vinci. Considered an archetypal masterpiece of the Italian Renaissance, it has been described as \"the best known, the most visited, the most written about, the most sung about, [and] the most parodied work of art in the world.\" The painting's novel qualities include the subject's enigmatic expression, monumentality of the composition, the subtle modelling of forms, and the atmospheric illusionism.",
-    "url": "https://en.wikipedia.org/wiki/Mona_Lisa",
-    "source_type": "wikipedia",
-    "created_at": "2026-01-16T09:26:30.370909+00:00",
-    "metadata": {
-      "query": "Mona Lisa"
     }
   }
 ]

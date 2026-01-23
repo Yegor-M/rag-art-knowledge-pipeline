@@ -13,6 +13,7 @@ from daily_art.domain.documents import Document
 from daily_art.rag.kb import KnowledgeBase
 from daily_art.core.validate import validate_settings
 from daily_art.pipeline.art_pipeline import ArtPipeline
+from daily_art.core.cache import FileCache
 
 log = logging.getLogger("daily_art.cli")
 
@@ -28,11 +29,11 @@ def cmd_fetch_docs(args: argparse.Namespace) -> int:
     docs = []
 
     if args.use_serper:
-        serper = SerperClient(api_key=s.serper_api_key)
+        serper = SerperClient(api_key=s.serper_api_key, cache=FileCache(s.data_dir / "cache"))
         docs.extend(serper.search_documents(args.query, limit=args.serper_limit))
 
     if args.use_wiki:
-        wiki = WikipediaClient()
+        wiki = WikipediaClient(cache=FileCache(s.data_dir / "cache"))
         doc = wiki.get_document(args.query)
         if doc:
             docs.append(doc)
@@ -88,7 +89,7 @@ def build_parser() -> argparse.ArgumentParser:
 
 def cmd_draft(args) -> int:
     pipeline = ArtPipeline()
-    path = pipeline.draft(title=args.title, author=args.author, year=args.year)
+    path = pipeline.build_draft(title=args.title, author=args.author, year=args.year)
 
     print(path)
     return 0

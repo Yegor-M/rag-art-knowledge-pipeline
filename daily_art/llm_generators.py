@@ -26,7 +26,7 @@ class PostGenerator:
             [
                 (
                     "system",
-                    "You write structured, evidence-grounded art notes.\n"
+                    "You write structured, elegant, evidence-grounded art notes.\n"
                     "You MUST use ONLY the provided EVIDENCE SNIPPETS for factual claims.\n"
                     "Return ONLY a single JSON object with exactly these keys:\n"
                     "title, year, art_style, artist, artist_info, related_quote, quote_author, "

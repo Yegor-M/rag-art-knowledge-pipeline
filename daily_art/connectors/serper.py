@@ -3,12 +3,11 @@ import hashlib
 import json
 import logging
 from typing import Any, Dict, List, Optional
-
+from daily_art.core.cache import FileCache
 from daily_art.connectors.http_client import SESSION
 from daily_art.domain.documents import Document
 
 log = logging.getLogger("daily_art.serper")
-
 
 def _stable_id(prefix: str, text: str) -> str:
     h = hashlib.sha1(text.encode("utf-8")).hexdigest()[:16]
@@ -16,18 +15,32 @@ def _stable_id(prefix: str, text: str) -> str:
 
 
 class SerperClient:
-    def __init__(self, api_key: str):
+    def __init__(self, api_key: str, cache: FileCache | None = None):
         self.api_key = api_key.strip()
+        self.cache = cache
 
     def search_raw(self, query: str) -> Dict[str, Any]:
         if not self.api_key:
             return {}
+        
+        cache_key = f"serper_search::{query}"
+        if self.cache:
+            cached = self.cache.get_json("serper", cache_key)
+            if cached is not None:
+                log.info("using cache")
+                return cached
+
         url = "https://google.serper.dev/search"
         headers = {"X-API-KEY": self.api_key, "Content-Type": "application/json"}
         payload = {"q": query, "gl": "us", "hl": "en"}
         r = SESSION.post(url, headers=headers, data=json.dumps(payload), timeout=20)
         r.raise_for_status()
-        return r.json()
+        data = r.json()
+
+        if self.cache:
+            self.cache.set_json("serper", cache_key, data)
+
+        return data
 
     def search_documents(self, query: str, limit: int = 5) -> List[Document]:
         """
@@ -71,12 +84,20 @@ class SerperClient:
     def search_images(self, query: str, num: int = 3) -> List[str]:
         if not self.api_key:
             return []
+
+        cache_key = f"serper_images::{query}::num={num}"
+        if self.cache:
+            cached = self.cache.get_json("serper", cache_key)
+            if cached is not None:
+                return cached
+
         url = "https://google.serper.dev/images"
         headers = {"X-API-KEY": self.api_key, "Content-Type": "application/json"}
         payload = {"q": query, "gl": "us", "hl": "en", "num": num}
         r = SESSION.post(url, headers=headers, data=json.dumps(payload), timeout=20)
         r.raise_for_status()
         j = r.json()
+
         urls: List[str] = []
         for it in j.get("images", []) or []:
             if isinstance(it, dict) and it.get("imageUrl"):

@@ -33,7 +33,7 @@ class ArtPipeline:
         
         self.generator = PostGenerator(model=self.model)
 
-    def draft(self, title: str, author: str, year: str) -> Path:
+    def build_draft(self, title: str, author: str, year: str) -> Path:
         query = " ".join([title, author, year]).strip()
 
         # 1) Fetch docs (deterministic inputs)

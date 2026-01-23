@@ -7,6 +7,7 @@ from daily_art.domain.documents import Document, Evidence
 from daily_art.rag.chunking import Chunker, ChunkingConfig
 from daily_art.rag.embeddings import Embedder, EmbeddingConfig
 from daily_art.rag.vectordb import VectorStore, QdrantConfig
+from daily_art.core.cache import FileCache
 
 
 @dataclass(frozen=True)
@@ -18,12 +19,10 @@ class KnowledgeBaseConfig:
 
 
 class KnowledgeBase:
-    def __init__(self, *, openai_api_key: str, cfg: KnowledgeBaseConfig | None = None):
+    def __init__(self, *, openai_api_key: str, cfg: KnowledgeBaseConfig | None = None, cache: FileCache | None = None):
         self.cfg = cfg or KnowledgeBaseConfig()
         self.chunker = Chunker(self.cfg.chunking)
-        self.embedder = Embedder(api_key=openai_api_key, cfg=self.cfg.embeddings)
-
-        # vector size depends on embedding model; we can infer by embedding one small text
+        self.embedder = Embedder(api_key=openai_api_key, cfg=self.cfg.embeddings, cache=cache)
         sample_vec = self.embedder.embed_query("vector-size-probe")
         self.store = VectorStore(cfg=self.cfg.qdrant, vector_size=len(sample_vec))
 
